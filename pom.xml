@@ -8,8 +8,7 @@
     <artifactId>jsontreefilter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <description>Getting subsets of Jackson Tree Model objects. Current status: experimental, just playing around.
-    </description>
+    <description>Getting subset copies of Jackson Tree Model objects.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,6 +25,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.carrotsearch</groupId>
+            <artifactId>junit-benchmarks</artifactId>
+            <version>0.7.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
