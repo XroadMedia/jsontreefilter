@@ -4,7 +4,9 @@ package tv.xrm.jfilter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Given a Jackson Tree Model, copies a sub-tree from it based on a simple specification of object field names.
@@ -12,28 +14,7 @@ import java.util.*;
  */
 public final class FilteredTreeCopier {
 
-    public static final String WILDCARD = null;
-
-    /**
-     * Sub-tree specification node.
-     */
-    public static final class Node {
-        private final String name;
-        private final List<Node> children;
-
-        public Node(final String name, final List<Node> children) {
-            this.name = name;
-            this.children = Objects.requireNonNull(children);
-        }
-
-        public Node(final String name, Node... children) {
-            this(name, Arrays.asList(children));
-        }
-
-        public Node(final String name) {
-            this(name, Collections.<Node>emptyList());
-        }
-    }
+    public static final String WILDCARD = "";
 
     private FilteredTreeCopier() {
     }
@@ -70,20 +51,20 @@ public final class FilteredTreeCopier {
                 final ObjectNode newObject = object.objectNode();
 
                 for (final Node node : nameNodes) {
-                    final String name = node.name;
+                    final String name = node.getName();
 
                     if (isNotWildcard(name)) {
                         // specific name
                         final JsonNode child = object.get(name);
                         if (child != null) {
-                            newObject.put(name, copyOrShadow(child, node.children, copy));
+                            newObject.put(name, copyOrShadow(child, node.getChildren(), copy));
                         }
                     } else {
                         // "all children"
                         final Iterator<Map.Entry<String, JsonNode>> children = object.fields();
                         while (children.hasNext()) {
                             final Map.Entry<String, JsonNode> child = children.next();
-                            newObject.put(child.getKey(), copyOrShadow(child.getValue(), node.children, copy));
+                            newObject.put(child.getKey(), copyOrShadow(child.getValue(), node.getChildren(), copy));
                         }
                     }
                 }
@@ -100,32 +81,11 @@ public final class FilteredTreeCopier {
     }
 
     private static boolean isNotWildcard(final Object name) {
-        return name != WILDCARD;
+        return !name.equals(WILDCARD);
     }
 
     private static JsonNode deepCopyOrRef(final JsonNode root, final boolean copy) {
         return copy ? root.deepCopy() : root;
-    }
-
-    /**
-     * Copy a single branch from the tree, specified by a list of field names.
-     */
-    public static JsonNode copyBranch(final JsonNode root, final List<String> names) {
-        return copyTree(root, convertStringList(names));
-    }
-
-    private static List<Node> convertStringList(final List<String> names) {
-        if (names.isEmpty()) {
-            return Collections.emptyList();
-        } else {
-            String current = names.get(0);
-            List<String> poppedNames = pop(names);
-            return Collections.singletonList(new Node(current, convertStringList(poppedNames)));
-        }
-    }
-
-    private static List<String> pop(final List<String> list) {
-        return list.subList(1, list.size());
     }
 
 }

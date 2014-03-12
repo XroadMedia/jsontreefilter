@@ -8,7 +8,7 @@
     <artifactId>jsontreefilter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <description>Getting subset copies of Jackson Tree Model objects.</description>
+    <description>Getting subset copies/views of Jackson Tree Model objects.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

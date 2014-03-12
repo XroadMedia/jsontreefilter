@@ -11,7 +11,7 @@ import org.junit.rules.TestRule;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * A few performance experiments.
@@ -26,7 +26,7 @@ public class PerformanceTest {
 
     private final JsonNode tree = TestUtil.readSampleJson("bigsample.json");
 
-    private final List<FilteredTreeCopier.Node> spec = Arrays.asList(new FilteredTreeCopier.Node("glossary"));
+    private final List<Node> spec = Arrays.asList(new Node("glossary"));
 
     @Test
     @BenchmarkOptions(benchmarkRounds = 5, warmupRounds = 1)
