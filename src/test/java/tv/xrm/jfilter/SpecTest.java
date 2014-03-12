@@ -66,4 +66,16 @@ public class SpecTest {
         assertEquals(ref, copy);
     }
 
+    @Test
+    public void simpleDemo() throws IOException {
+
+        final JsonNode tree = TestUtil.readSampleJson("demosample.json");
+
+        Spec s = Spec.spec("a", "b.c", "b.e.*.nickname");
+        final JsonNode copy = FilteredTreeCopier.copyTree(tree, s.toNodes());
+
+        assertEquals(TestUtil.readSampleJson("demosample-expected.json"), copy);
+
+    }
+
 }
