@@ -63,4 +63,5 @@ Limitations
 * This won't allow you to pick sub-trees from anywhere in the tree (that's what Jackson's JSON Pointer support does very nicely). It just allows you to create a copy of the tree with specified branches (starting at the root object, i.e. preserving the original "meta-structure") and others left out.
 * This works only on object fields (names). You can't select specific entries from a JSON array, for instance.
 * Whitelisting only (you can explicitly select what you like or use a wildcard, but you can't say "everything but this branch").
+* The textual specification doesn't handle escaping yet. Mainly, this means field names with periods and asterisks won't work.
 * Only moderately tested so far, and let's not talk about nice documentation.

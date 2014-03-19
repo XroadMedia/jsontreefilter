@@ -58,7 +58,7 @@ public class Spec {
         return normal;
     }
 
-    synchronized List<Node> toNodes() {
+    public synchronized List<Node> toNodes() {
         final List<List<String>> split = new ArrayList<>();
         for (String spec : normalised()) {
             split.add(split(spec));
