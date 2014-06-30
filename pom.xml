@@ -74,4 +74,12 @@
             <url>${inhouse-repo-url}/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:XroadMedia/jsontreefilter.git</connection>
+        <url>scm:git:git@github.com:XroadMedia/jsontreefilter.git</url>
+        <developerConnection>scm:git:git@github.com:XroadMedia/jsontreefilter.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
 </project>
