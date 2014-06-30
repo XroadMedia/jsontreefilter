@@ -8,7 +8,7 @@ public interface IJsonObjectCallback {
 
     /**
      * Callback for custom post-processing of the ObjectNode.
-     * 
+     *
      * @param newNode
      * @param existingNode
      * @param currentPath

@@ -204,6 +204,6 @@ public class Spec {
     }
 
     public static enum OverlappingBehaviour {
-        INTERSECTION, UNION;
+        INTERSECTION, UNION
     }
 }

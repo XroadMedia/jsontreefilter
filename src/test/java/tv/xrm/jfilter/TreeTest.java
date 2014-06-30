@@ -34,7 +34,7 @@ public class TreeTest {
 
         assertEquals(root, copy);
     }
-    
+
     @Test
     public void jsonTreeDoesntHaveTheSameStructure() {
         final JsonNode root = TestUtil.readSampleJson("sample.json");
@@ -57,13 +57,14 @@ public class TreeTest {
                 new INameNodeOverwriteCallback() {
                     @Override
                     public List<Node> overwriteNameNodesForCurrentSubtree(ObjectNode existingNode,
-                            List<String> currentPath) {
+                                                                          List<String> currentPath) {
                         if (existingNode.has("title") && currentPath.get(currentPath.size() - 1).equals("GlossDiv")) {
                             return Arrays.asList(new Node("title"));
                         }
                         return null;
                     }
-                });
+                }
+        );
 
         JsonNode glossDivNode = copy.get("glossary").get("GlossDiv");
         assertEquals("S", glossDivNode.get("title").asText());
@@ -79,7 +80,7 @@ public class TreeTest {
                 new IJsonObjectCallback() {
                     @Override
                     public void postProcessObjectNode(ObjectNode newNode, ObjectNode existingNode,
-                            List<String> currentPath) {
+                                                      List<String> currentPath) {
                         if (currentPath.size() != 2) {
                             return;
                         }
@@ -87,7 +88,8 @@ public class TreeTest {
                             newNode.put("GlossList", 1);
                         }
                     }
-                }, null);
+                }, null
+        );
 
         JsonNode glossDivNode = copy.get("glossary").get("GlossDiv");
         assertEquals("S", glossDivNode.get("title").asText());
@@ -103,8 +105,9 @@ public class TreeTest {
                 Arrays.asList(new Node("glossary", new Node(FilteredTreeCopier.WILDCARD, new Node("title")))));
 
         final JsonNode ref = TestUtil.MAPPER.readValue(TestUtil
-                .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
-                JsonNode.class);
+                        .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
+                JsonNode.class
+        );
 
         assertEquals(ref, copy);
     }
@@ -117,8 +120,9 @@ public class TreeTest {
                 Arrays.asList(new Node("glossary", new Node(FilteredTreeCopier.WILDCARD, new Node("title")))));
 
         final JsonNode ref = TestUtil.MAPPER.readValue(TestUtil
-                .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
-                JsonNode.class);
+                        .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
+                JsonNode.class
+        );
 
         assertEquals(ref, copy);
     }

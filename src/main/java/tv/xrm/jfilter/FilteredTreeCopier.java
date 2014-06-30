@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -39,7 +38,7 @@ public final class FilteredTreeCopier {
      */
     // TODO doc
     public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-            final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
+                                    final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
         return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), null, nameNodeOverwriteCallback, true);
     }
 
@@ -51,7 +50,7 @@ public final class FilteredTreeCopier {
      */
     // TODO doc
     public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-            final IJsonObjectCallback objectModifierCallback, final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
+                                    final IJsonObjectCallback objectModifierCallback, final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
         return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), objectModifierCallback,
                 nameNodeOverwriteCallback, true);
     }
@@ -64,7 +63,7 @@ public final class FilteredTreeCopier {
      */
     // TODO doc
     public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-            final IJsonObjectCallback objectModifierCallback) {
+                                    final IJsonObjectCallback objectModifierCallback) {
         return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), objectModifierCallback, null, true);
     }
 
@@ -74,7 +73,7 @@ public final class FilteredTreeCopier {
      * The returned tree may share container objects with the original one, i.e. changes on either tree may be seen in
      * the other. Depending on the JSON and the filter spec, this can result in dramatically less memory and CPU
      * consumption than copyTree(). However, it's potentially unsafe, particularly under concurrency.
-     * 
+     *
      * @see tv.xrm.jfilter.FilteredTreeCopier#copyTree(com.fasterxml.jackson.databind.JsonNode, java.util.List)
      */
     public static JsonNode shadowTree(final JsonNode root, final List<Node> nameNodes) {
@@ -82,8 +81,8 @@ public final class FilteredTreeCopier {
     }
 
     private static JsonNode copyOrShadow(final JsonNode root, final List<Node> nNodes, final boolean copy,
-            final List<String> currentPath, final IJsonObjectCallback objectModifierCallback,
-            final INameNodeOverwriteCallback nameNodeCallback, boolean parentNodeIsWildcard) {
+                                         final List<String> currentPath, final IJsonObjectCallback objectModifierCallback,
+                                         final INameNodeOverwriteCallback nameNodeCallback, boolean parentNodeIsWildcard) {
         if (root.isObject()) {
             final ObjectNode object = (ObjectNode) root;
             final List<Node> nameNodes;

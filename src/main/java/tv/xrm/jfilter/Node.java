@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Sub-tree specification node for FilteredTreeCopier. This is the "programmatic" specification.
- * 
+ *
  * @see tv.xrm.jfilter.FilteredTreeCopier
  * @see tv.xrm.jfilter.Spec
  */
