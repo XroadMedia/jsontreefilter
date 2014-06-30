@@ -151,16 +151,10 @@ public final class FilteredTreeCopier {
                     newArrayNode.add(copyOrShadow);
                 }
             }
-//            if (newArrayNode.size() == 0) {
-//                return NullNode.getInstance();
-//            }
             return newArrayNode;
         } else {
             if (!parentNodeIsWildcard && nNodes != null && !nNodes.isEmpty()) {
-                // if (nNodes.size() > 1
-                // || !(nNodes.get(0).getChildren() == null || nNodes.get(0).getChildren().isEmpty())) {
                 return null;
-                // }
             }
             // a non-object/non-array is always copied/shadowed fully (names do not apply - our processing stops here)
             return deepCopyOrRef(root, copy);
