@@ -1,17 +1,18 @@
 package tv.xrm.jfilter;
 
-import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
-import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * A few performance experiments.

@@ -1,13 +1,13 @@
 package tv.xrm.jfilter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Sub-tree specification node for FilteredTreeCopier. This is the "programmatic" specification.
- *
+ * 
  * @see tv.xrm.jfilter.FilteredTreeCopier
  * @see tv.xrm.jfilter.Spec
  */
@@ -25,7 +25,7 @@ public final class Node {
     }
 
     public Node(final String name) {
-        this(name, Collections.<Node>emptyList());
+        this(name, new ArrayList<Node>());
     }
 
     String getName() {
@@ -34,6 +34,22 @@ public final class Node {
 
     List<Node> getChildren() {
         return children;
+    }
+
+    public synchronized Node deepCopy() {
+        return deepCopy(this);
+    }
+
+    private synchronized Node deepCopy(Node node) {
+        List<Node> children = node.children;
+        if (children != null) {
+            List<Node> childCopies = new ArrayList<>(children.size());
+            for (Node child : children) {
+                childCopies.add(deepCopy(child));
+            }
+            return new Node(node.getName(), childCopies);
+        }
+        return new Node(node.getName());
     }
 
     @Override

@@ -17,6 +17,7 @@ public class SpecTest {
         assertEquals("a.b.c", Spec.cleanup("....a..b......c."));
         assertEquals("", Spec.cleanup("...."));
         assertEquals("a", Spec.cleanup(".a."));
+        assertEquals("a.'b.[:.c'.d", Spec.cleanup("a..'b.[:.c'...d"));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -53,7 +54,7 @@ public class SpecTest {
 
     @Test
     public void convertsToNodeWithSimpleWildcards() throws IOException {
-        Spec s = Spec.spec("glossary.title", "glossary.GlossDiv2.GlossList.GlossEntry.*.para");
+        Spec s = Spec.spec("glossary.title", "glossary.GlossDiv2.'GlossList'.GlossEntry.*.para");
 
         List<Node> nodes = s.toNodes();
 

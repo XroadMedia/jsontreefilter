@@ -24,6 +24,20 @@ public class NodeTest {
         assertEquals("bla", n.getName());
         assertEquals(kids, n.getChildren());
     }
+    
+    @Test
+    public void deepCopy() {
+        final List<Node> kids = Arrays.asList(new Node("foo", Arrays.asList(new Node("bar"), new Node("baz"))));
+
+        Node n = new Node("bla", kids);
+        Node deepCopy = n.deepCopy();
+        
+        assertEquals("bla", deepCopy.getName());
+        Node secondLevel = deepCopy.getChildren().get(0);
+        assertEquals("foo", secondLevel.getName());
+        Node secondOnThirdLevel = secondLevel.getChildren().get(1);
+        assertEquals("baz", secondOnThirdLevel.getName());
+    }
 
     @Test
     public void toStringWorks() {
