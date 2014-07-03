@@ -57,12 +57,23 @@ public class Spec {
         }
         return this;
     }
+    
+    public synchronized Spec add(final Iterable<String> specs) {
+        for (String s : specs) {
+            add(s);
+        }
+        return this;
+    }
 
     public static Spec spec(final String... specs) {
         return new Spec().add(specs);
     }
 
     public static Spec spec(final OverlappingBehaviour behaviour, final String... specs) {
+        return new Spec(behaviour).add(specs);
+    }
+    
+    public static Spec spec(final OverlappingBehaviour behaviour, final Iterable<String> specs) {
         return new Spec(behaviour).add(specs);
     }
 

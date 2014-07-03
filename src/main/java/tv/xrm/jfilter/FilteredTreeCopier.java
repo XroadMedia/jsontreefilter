@@ -27,7 +27,7 @@ public final class FilteredTreeCopier {
      * (unless they are immutable).
      */
     public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes) {
-        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), null, null, true);
+        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), null, true);
     }
 
     /**
@@ -35,36 +35,11 @@ public final class FilteredTreeCopier {
      * <p/>
      * The returned tree is separate from the original one, i.e. it can be safely modified. Nodes are generally copied
      * (unless they are immutable).
+     * The objectModifierCallback can be passed for custom post processing of object nodes.
      */
-    // TODO doc
     public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-                                    final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
-        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), null, nameNodeOverwriteCallback, true);
-    }
-
-    /**
-     * Copy a sub-tree from the given tree, based on a hierarchical specification: a tree of field names.
-     * <p/>
-     * The returned tree is separate from the original one, i.e. it can be safely modified. Nodes are generally copied
-     * (unless they are immutable).
-     */
-    // TODO doc
-    public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-                                    final IJsonObjectCallback objectModifierCallback, final INameNodeOverwriteCallback nameNodeOverwriteCallback) {
-        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), objectModifierCallback,
-                nameNodeOverwriteCallback, true);
-    }
-
-    /**
-     * Copy a sub-tree from the given tree, based on a hierarchical specification: a tree of field names.
-     * <p/>
-     * The returned tree is separate from the original one, i.e. it can be safely modified. Nodes are generally copied
-     * (unless they are immutable).
-     */
-    // TODO doc
-    public static JsonNode copyTree(final JsonNode root, final List<Node> nameNodes,
-                                    final IJsonObjectCallback objectModifierCallback) {
-        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), objectModifierCallback, null, true);
+            final IJsonObjectCallback objectModifierCallback) {
+        return copyOrShadow(root, nameNodes, true, new LinkedList<String>(), objectModifierCallback, true);
     }
 
     /**
@@ -77,30 +52,18 @@ public final class FilteredTreeCopier {
      * @see tv.xrm.jfilter.FilteredTreeCopier#copyTree(com.fasterxml.jackson.databind.JsonNode, java.util.List)
      */
     public static JsonNode shadowTree(final JsonNode root, final List<Node> nameNodes) {
-        return copyOrShadow(root, nameNodes, false, new LinkedList<String>(), null, null, true);
+        return copyOrShadow(root, nameNodes, false, new LinkedList<String>(), null, true);
     }
 
     private static JsonNode copyOrShadow(final JsonNode root, final List<Node> nNodes, final boolean copy,
-                                         final List<String> currentPath, final IJsonObjectCallback objectModifierCallback,
-                                         final INameNodeOverwriteCallback nameNodeCallback, boolean parentNodeIsWildcard) {
+            final List<String> currentPath, final IJsonObjectCallback objectModifierCallback,
+            boolean parentNodeIsWildcard) {
         if (root.isObject()) {
             final ObjectNode object = (ObjectNode) root;
-            final List<Node> nameNodes;
-            if (nameNodeCallback != null) {
-                List<Node> overwrittenNameNodes = nameNodeCallback.overwriteNameNodesForCurrentSubtree(object,
-                        currentPath);
-                if (overwrittenNameNodes != null) {
-                    nameNodes = overwrittenNameNodes;
-                } else {
-                    nameNodes = nNodes;
-                }
-            } else {
-                nameNodes = nNodes;
-            }
-            if (!nameNodes.isEmpty()) {
+            if (!nNodes.isEmpty()) {
                 final ObjectNode newObject = object.objectNode();
                 currentPath.add(null);
-                for (final Node node : nameNodes) {
+                for (final Node node : nNodes) {
                     final String name = node.getName();
                     currentPath.set(currentPath.size() - 1, name);
                     if (isNotWildcard(name)) {
@@ -108,7 +71,7 @@ public final class FilteredTreeCopier {
                         final JsonNode child = object.get(name);
                         if (child != null) {
                             JsonNode copyOrShadow = copyOrShadow(child, node.getChildren(), copy, currentPath,
-                                    objectModifierCallback, nameNodeCallback, false);
+                                    objectModifierCallback, false);
                             if (copyOrShadow != null) {
                                 newObject.put(name, copyOrShadow);
                             }
@@ -119,7 +82,7 @@ public final class FilteredTreeCopier {
                         while (children.hasNext()) {
                             final Map.Entry<String, JsonNode> child = children.next();
                             JsonNode copyOrShadow = copyOrShadow(child.getValue(), node.getChildren(), copy,
-                                    currentPath, objectModifierCallback, nameNodeCallback, true);
+                                    currentPath, objectModifierCallback, true);
                             if (copyOrShadow != null) {
                                 newObject.put(child.getKey(), copyOrShadow);
                             }
@@ -146,7 +109,7 @@ public final class FilteredTreeCopier {
             Iterator<JsonNode> iterator = a.elements();
             while (iterator.hasNext()) {
                 JsonNode copyOrShadow = copyOrShadow(iterator.next(), nNodes, copy, currentPath,
-                        objectModifierCallback, nameNodeCallback, parentNodeIsWildcard);
+                        objectModifierCallback, parentNodeIsWildcard);
                 if (copyOrShadow != null && !copyOrShadow.isNull()) {
                     newArrayNode.add(copyOrShadow);
                 }

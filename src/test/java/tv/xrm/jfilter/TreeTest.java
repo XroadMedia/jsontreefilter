@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class TreeTest {
@@ -49,26 +50,26 @@ public class TreeTest {
     }
 
     @Test
-    public void nameNodeOverwrite() {
-        final JsonNode root = TestUtil.readSampleJson("sample.json");
+    public void arrayProcessing() {
+        final JsonNode root = TestUtil.readSampleJson("arraysample.json");
 
         final JsonNode copy = FilteredTreeCopier.copyTree(root,
-                Arrays.asList(new Node("glossary", new Node("GlossDiv", new Node("GlossList")))),
-                new INameNodeOverwriteCallback() {
-                    @Override
-                    public List<Node> overwriteNameNodesForCurrentSubtree(ObjectNode existingNode,
-                                                                          List<String> currentPath) {
-                        if (existingNode.has("title") && currentPath.get(currentPath.size() - 1).equals("GlossDiv")) {
-                            return Arrays.asList(new Node("title"));
-                        }
-                        return null;
-                    }
-                }
-        );
+                Arrays.asList(new Node("b", new Node("c", new Node("doesNotExist")), new Node("d"), new Node("e"))));
 
-        JsonNode glossDivNode = copy.get("glossary").get("GlossDiv");
-        assertEquals("S", glossDivNode.get("title").asText());
-        assertFalse(glossDivNode.has("GlossList"));
+        assertFalse(copy.has("a"));
+        assertTrue(copy.has("b"));
+        JsonNode b = copy.get("b");
+        assertEquals(b.size(), 2);
+        JsonNode firstArrayElement = b.get(0);
+        assertTrue(firstArrayElement.has("d"));
+        JsonNode d = firstArrayElement.get("d");
+        assertEquals(d.getNodeType(), JsonNodeType.ARRAY);
+        assertEquals(d.size(), 0);
+        assertTrue(firstArrayElement.has("e"));
+
+        JsonNode c = firstArrayElement.get("c");
+        assertEquals(c.getNodeType(), JsonNodeType.ARRAY);
+        assertEquals(c.size(), 0);
     }
 
     @Test
@@ -76,11 +77,10 @@ public class TreeTest {
         final JsonNode root = TestUtil.readSampleJson("sample.json");
 
         final JsonNode copy = FilteredTreeCopier.copyTree(root,
-                Arrays.asList(new Node("glossary", new Node("GlossDiv"))),
-                new IJsonObjectCallback() {
+                Arrays.asList(new Node("glossary", new Node("GlossDiv"))), new IJsonObjectCallback() {
                     @Override
                     public void postProcessObjectNode(ObjectNode newNode, ObjectNode existingNode,
-                                                      List<String> currentPath) {
+                            List<String> currentPath) {
                         if (currentPath.size() != 2) {
                             return;
                         }
@@ -88,8 +88,7 @@ public class TreeTest {
                             newNode.put("GlossList", 1);
                         }
                     }
-                }, null
-        );
+                });
 
         JsonNode glossDivNode = copy.get("glossary").get("GlossDiv");
         assertEquals("S", glossDivNode.get("title").asText());
@@ -105,9 +104,8 @@ public class TreeTest {
                 Arrays.asList(new Node("glossary", new Node(FilteredTreeCopier.WILDCARD, new Node("title")))));
 
         final JsonNode ref = TestUtil.MAPPER.readValue(TestUtil
-                        .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
-                JsonNode.class
-        );
+                .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
+                JsonNode.class);
 
         assertEquals(ref, copy);
     }
@@ -120,9 +118,8 @@ public class TreeTest {
                 Arrays.asList(new Node("glossary", new Node(FilteredTreeCopier.WILDCARD, new Node("title")))));
 
         final JsonNode ref = TestUtil.MAPPER.readValue(TestUtil
-                        .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
-                JsonNode.class
-        );
+                .q(" {'glossary':{'title':'example glossary','GlossDiv':{'title':'S'},'GlossDiv2':{'title':'S'}}} "),
+                JsonNode.class);
 
         assertEquals(ref, copy);
     }
