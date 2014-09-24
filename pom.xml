@@ -4,7 +4,7 @@
 
     <groupId>tv.xrm.jfilter</groupId>
     <artifactId>jsontreefilter</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
 
     <description>Getting subset copies/views of Jackson Tree Model objects.</description>
 
@@ -87,7 +87,7 @@
         <connection>scm:git:git@github.com:XroadMedia/jsontreefilter.git</connection>
         <url>scm:git:git@github.com:XroadMedia/jsontreefilter.git</url>
         <developerConnection>scm:git:git@github.com:XroadMedia/jsontreefilter.git</developerConnection>
-        <tag>jsontreefilter-0.0.4</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
