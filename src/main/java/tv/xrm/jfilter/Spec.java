@@ -31,7 +31,6 @@ public class Spec {
     }
 
     public Spec(OverlappingBehaviour behaviour) {
-        super();
         this.behaviour = behaviour;
         if (behaviour == null) {
             behaviour = OverlappingBehaviour.UNION;
@@ -110,13 +109,13 @@ public class Spec {
             for (int i = 0; i < children.size(); i++) {
                 Node child = children.get(i);
                 if (child.getName().equals(FilteredTreeCopier.WILDCARD)) {
-                    // copy childs of child to neighbours
+                    // copy children of child to neighbours
                     if (child.getChildren() != null && !child.getChildren().isEmpty() && children.size() > 1) {
                         for (int j = 0; j < children.size(); j++) {
                             if (j == i) {
                                 continue;
                             }
-                            children.get(j).getChildren().addAll(copyChilds(child.getChildren()));
+                            children.get(j).getChildren().addAll(copyChildren(child.getChildren()));
                         }
                         children.remove(i--);
                         continue;
@@ -129,7 +128,7 @@ public class Spec {
         }
     }
 
-    private List<Node> copyChilds(List<Node> nodes) {
+    private List<Node> copyChildren(List<Node> nodes) {
         List<Node> result = new ArrayList<>(nodes.size());
         for (Node n : nodes) {
             result.add(n.deepCopy());
