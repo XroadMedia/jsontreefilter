@@ -41,10 +41,10 @@ public final class Node {
     }
 
     private synchronized Node deepCopy(Node node) {
-        List<Node> children = node.children;
-        if (children != null) {
-            List<Node> childCopies = new ArrayList<>(children.size());
-            for (Node child : children) {
+        List<Node> otherChildren = node.children;
+        if (otherChildren != null) {
+            List<Node> childCopies = new ArrayList<>(otherChildren.size());
+            for (Node child : otherChildren) {
                 childCopies.add(deepCopy(child));
             }
             return new Node(node.getName(), childCopies);

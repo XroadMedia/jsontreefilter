@@ -30,11 +30,8 @@ public class Spec {
         behaviour = OverlappingBehaviour.UNION;
     }
 
-    public Spec(OverlappingBehaviour behaviour) {
-        this.behaviour = behaviour;
-        if (behaviour == null) {
-            behaviour = OverlappingBehaviour.UNION;
-        }
+    public Spec(final OverlappingBehaviour behaviour) {
+        this.behaviour = (behaviour == null) ? OverlappingBehaviour.UNION : behaviour;
     }
 
     public synchronized Spec add(final String spec) {
@@ -174,7 +171,7 @@ public class Spec {
                 continue;
             }
             List<String> dotSplitList;
-            if (i % 2 == 1) {
+            if ((i & 1) == 1) { // odd?
                 dotSplitList = Arrays.asList(bracketToken);
             } else {
                 dotSplitList = new ArrayList<>(Arrays.asList(bracketToken.split("\\.")));
