@@ -28,11 +28,11 @@ public final class Node {
         this(name, new ArrayList<Node>());
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    List<Node> getChildren() {
+    public List<Node> getChildren() {
         return children;
     }
 
