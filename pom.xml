@@ -5,7 +5,7 @@
 
     <groupId>tv.xrm.jfilter</groupId>
     <artifactId>jsontreefilter</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
 
     <description>Getting subset copies/views of Jackson Tree Model objects.</description>
 
