@@ -73,7 +73,7 @@ public final class FilteredTreeCopier {
                             JsonNode copyOrShadow = copyOrShadow(child, node.getChildren(), copy, currentPath,
                                     objectModifierCallback, false);
                             if (copyOrShadow != null) {
-                                newObject.put(name, copyOrShadow);
+                                newObject.set(name, copyOrShadow);
                             }
                         }
                     } else {
@@ -84,7 +84,7 @@ public final class FilteredTreeCopier {
                             JsonNode copyOrShadow = copyOrShadow(child.getValue(), node.getChildren(), copy,
                                     currentPath, objectModifierCallback, true);
                             if (copyOrShadow != null) {
-                                newObject.put(child.getKey(), copyOrShadow);
+                                newObject.set(child.getKey(), copyOrShadow);
                             }
                         }
                     }

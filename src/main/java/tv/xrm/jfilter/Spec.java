@@ -1,13 +1,7 @@
 package tv.xrm.jfilter;
 
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Textual specifications for sub-trees, vaguely similar to XPath. Basically, each path down the tree is added to the
@@ -172,7 +166,7 @@ public class Spec {
             }
             List<String> dotSplitList;
             if ((i & 1) == 1) { // odd?
-                dotSplitList = Arrays.asList(bracketToken);
+                dotSplitList = Collections.singletonList(bracketToken);
             } else {
                 dotSplitList = new ArrayList<>(Arrays.asList(bracketToken.split("\\.")));
             }
@@ -210,7 +204,7 @@ public class Spec {
         return cleaned.toString();
     }
 
-    public static enum OverlappingBehaviour {
+    public enum OverlappingBehaviour {
         INTERSECTION, UNION
     }
 }
